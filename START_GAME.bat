@@ -1,6 +1,7 @@
 @echo off
 setlocal
 cd /d "%~dp0battle_city"
+set "LOG=%~dp0ERROR_LOG.txt"
 
 where py >nul 2>nul
 if %errorlevel%==0 (
@@ -30,7 +31,6 @@ if errorlevel 1 (
     if %ATTEMPT% GEQ 3 (
         echo.
         echo Failed to install pygame after 3 attempts.
-        echo Check your Internet connection, VPN, proxy or antivirus and run START_GAME again.
         pause
         exit /b 1
     )
@@ -42,12 +42,27 @@ if errorlevel 1 (
 )
 
 :pygame_ready
+cls
 echo Starting Battle City...
-%PYTHON% __main__.py
+echo Python command: %PYTHON%
+echo Working folder: %CD%
+echo.
 
-if errorlevel 1 (
+%PYTHON% __main__.py > "%LOG%" 2>&1
+set "EXITCODE=%ERRORLEVEL%"
+
+if not "%EXITCODE%"=="0" (
+    echo The game stopped with error code %EXITCODE%.
     echo.
-    echo The game stopped with an error. Send a screenshot of this window.
-    pause
+    type "%LOG%"
+    echo.
+    echo The same error was saved to:
+    echo %LOG%
+) else (
+    echo The game window was closed normally.
+    if exist "%LOG%" del "%LOG%" >nul 2>nul
 )
+
+echo.
+pause
 endlocal
