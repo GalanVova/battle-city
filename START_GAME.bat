@@ -1,8 +1,7 @@
 @echo off
 setlocal
 set "ROOT=%~dp0"
-set "PYTHONPATH=%ROOT%"
-cd /d "%ROOT%battle_city"
+cd /d "%ROOT%"
 
 where py >nul 2>nul
 if %errorlevel%==0 (
@@ -34,7 +33,7 @@ if errorlevel 1 (
 
 echo Starting Battle City...
 echo.
-%PYTHON% __main__.py
+%PYTHON% battle_city\__main__.py
 set "EXIT_CODE=%errorlevel%"
 
 echo.
