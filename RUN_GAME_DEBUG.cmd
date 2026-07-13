@@ -1,2 +1,3 @@
 @echo off
-start "Battle City Debug" cmd /k "cd /d ""%~dp0battle_city"" && py __main__.py"
+set "ROOT=%~dp0"
+start "Battle City Debug" cmd /k "set PYTHONPATH=%ROOT%&& cd /d ""%ROOT%battle_city"" && py __main__.py"
