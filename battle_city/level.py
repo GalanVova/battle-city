@@ -4,6 +4,7 @@ from battle_city.castle import *
 from random import randrange
 from battle_city.tile import Tile, BRICK, BETON
 from battle_city.globals import DISPLAY
+from battle_city import power_state
 
 
 def get_game_map(number):
@@ -43,21 +44,32 @@ class Level:
             (112, 216))
         for protecting_block in self.protecting_blocks:
             self.game_map.append(Tile(BRICK, protecting_block))
+
         if not players and count == 1:
-            self.players = [Player(0, 0, 3 / 4, 0, (64, 208), self)]
+            self.players = [
+                Player(0, power_state.player_powers[0], 3 / 4, 0,
+                       (64, 208), self)
+            ]
         elif count == 1:
             self.players = players
             players[0].is_alive = True
             players[0].current_bullets = players[0].max_bullets
             players[0].level = self
+
         if not players and count == 2:
-            self.players = [Player(0, 0, 3 / 4, 0, (64, 208), self), Player(1, 0, 3 / 4, 0, (128, 208), self)]
+            self.players = [
+                Player(0, power_state.player_powers[0], 3 / 4, 0,
+                       (64, 208), self),
+                Player(1, power_state.player_powers[1], 3 / 4, 0,
+                       (128, 208), self)
+            ]
         elif count == 2:
             self.players = players
             for player in players:
                 player.is_alive = True
                 player.current_bullets = player.max_bullets
                 player.level = self
+
         self.bullets = []
         self.enemies = []
         self.explosions = []
@@ -66,7 +78,7 @@ class Level:
                                randrange(DISPLAY.get_height() - 15)), self),
                         Bonus(randrange(4),
                               (randrange(DISPLAY.get_width() - 16),
-                              randrange(DISPLAY.get_height() - 15)), self)]
+                               randrange(DISPLAY.get_height() - 15)), self)]
         self.castle = Castle(self)
         self.goal = 1
 
