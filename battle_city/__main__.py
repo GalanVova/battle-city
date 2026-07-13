@@ -3,6 +3,7 @@ import json
 import pygame
 
 from game import Game
+from battle_city import power_select  # noqa: F401 - installs menu patches
 
 if __name__ == '__main__':
     g = Game()
